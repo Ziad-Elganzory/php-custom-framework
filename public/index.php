@@ -4,10 +4,8 @@ declare(strict_types=1);
 use App\App;
 use App\Config;
 use App\Controllers\HomeController;
-use App\Controllers\InvoiceController;
-use App\Exceptions\RouteNotFoundException;
+use App\Controllers\UserController;
 use App\Router;
-use App\View;
 use Dotenv\Dotenv;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -21,7 +19,11 @@ define('VIEWS_PATH', __DIR__ . '/../views');
 $router = new Router();
 
 $router
-    ->get('/',[HomeController::class, 'index']);
+    ->get('/',[HomeController::class, 'index'])
+    ->get('/users',[UserController::class, 'index'])
+    ->get('/users/{id}',[UserController::class, 'show'])
+    ->get('/users/create',[UserController::class, 'create'])
+    ->post('/users/store',[UserController::class, 'store']);
 
 (new App(
     $router,
