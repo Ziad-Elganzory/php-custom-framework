@@ -11,7 +11,8 @@ class User extends Model
     {
         $stmt = $this->db->prepare('SELECT * FROM users');
         $stmt->execute();
-        return $stmt->fetchAll();
+        // return $stmt->fetchAll();
+        return $this->fetchLazy($stmt);
     }
 
     public function getUserById(int $id)

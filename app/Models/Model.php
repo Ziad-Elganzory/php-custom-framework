@@ -15,4 +15,11 @@ abstract class Model
     {
         $this->db = App::db();
     }
+
+    public function fetchLazy(\PDOStatement $stmt)
+    {
+        foreach($stmt as $row) {
+            yield $row;
+        }
+    }
 }
