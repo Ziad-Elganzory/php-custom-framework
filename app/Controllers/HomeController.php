@@ -3,16 +3,14 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use App\Attributes\Route;
+use App\Attributes\Get;
 use App\View;
 
 class HomeController
 {
-
-    #[Route('/')]
+    #[Get('/')]
     public function index(): View
     {
-
         return View::make('index');
     }
 }
