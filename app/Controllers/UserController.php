@@ -3,11 +3,16 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Attributes\Get;
+use App\Attributes\Post;
+use App\Attributes\Route;
 use App\Models\User;
 use App\View;
 
 class UserController
 {
+
+    #[Get('/users')]
     public function index(): View
     {
         $users = (new User())->getUsers();
@@ -15,6 +20,7 @@ class UserController
         return View::make('users/index',['users' => $users]);
     }
 
+    #[Get('/users/{id}')]
     public function show(array $params)
     {
         $id = (int) $params['id'];
@@ -22,11 +28,13 @@ class UserController
         return View::make('users/show',['user' => $user]);
     }
 
+    #[Get('/users/create')]
     public function create()
     {
         return View::make('users/create');
     }
 
+    #[Post(routePath: '/users')]
     public function store()
     {
         [
