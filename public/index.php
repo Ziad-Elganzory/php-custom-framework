@@ -27,10 +27,6 @@ $router->registerRouteFromControllerAttribute([
     UserController::class
 ]);
 
-echo '<pre>';
-var_dump($router->routes());
-echo '</pre>';
-
 // $router
 //     ->get('/',[HomeController::class, 'index'])
 //     ->get('/users',[UserController::class, 'index'])
