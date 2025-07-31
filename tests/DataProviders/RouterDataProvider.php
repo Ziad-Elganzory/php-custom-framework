@@ -2,15 +2,17 @@
 
 namespace Tests\DataProviders;
 
+use App\Enums\HttpMethod;
+
 class RouterDataProvider
 {
     public static function routeNotFoundCases(): array
     {
         return [
-            ['/users','put'],
-            ['/invoices','post'],
-            ['/users','get'],
-            ['/users','post']
+            ['/users',HttpMethod::PUT->value],
+            ['/invoices',HttpMethod::POST->value],
+            ['/users',HttpMethod::GET->value],
+            ['/users',HttpMethod::POST->value]
         ];
     }
 }

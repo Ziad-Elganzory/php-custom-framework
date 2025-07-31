@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Container;
+use App\Enums\HttpMethod;
 use App\Exceptions\RouteNotFoundException;
 use App\Router;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -23,7 +24,7 @@ class RouterTest extends TestCase
     }
     public function test_that_it_can_register_a_route()
     {
-        $this->router->register('get', '/users', ['Users', 'index']);
+        $this->router->register(HttpMethod::GET, '/users', ['Users', 'index']);
 
         $expected = [
             'get' => [
@@ -84,7 +85,7 @@ class RouterTest extends TestCase
     {
         $this->router->get('/users',fn()=>[1,2,3]);
 
-        $this->assertSame([1,2,3],$this->router->resolve('/users','get'));
+        $this->assertSame([1,2,3],$this->router->resolve('/users',HttpMethod::GET->value));
     }
 
     public function test_that_it_resolves_route()
@@ -98,7 +99,7 @@ class RouterTest extends TestCase
 
         $this->router->get('/users',[$users::class,'index']);
 
-        $this->assertSame([1,2,3],$this->router->resolve('/users','get'));
+        $this->assertSame([1,2,3],$this->router->resolve('/users',HttpMethod::GET->value));
 
     }
 }
