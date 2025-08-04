@@ -24,7 +24,7 @@ class RouterTest extends TestCase
     }
     public function test_that_it_can_register_a_route()
     {
-        $this->router->register(HttpMethod::GET, '/users', ['Users', 'index']);
+        $this->router->register(HttpMethod::GET->value, '/users', ['Users', 'index']);
 
         $expected = [
             'get' => [
