@@ -35,6 +35,7 @@ $router->registerRouteFromControllerAttribute([
 //     ->post('/users/store',[UserController::class, 'store']);
 
 (new App(
+    $container,
     $router,
     [
         'uri'=>$_SERVER['REQUEST_URI'],
