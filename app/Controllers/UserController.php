@@ -5,24 +5,12 @@ namespace App\Controllers;
 
 use App\Attributes\Get;
 use App\Attributes\Post;
-use App\Attributes\Route;
-use App\Enums\Role;
-use App\Enums\Roles;
 use App\Models\User;
-use App\Services\MailerService;
 use App\View;
-use Symfony\Component\Mailer\Mailer;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mailer\Transport;
-use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Address;
 
 class UserController
 {
-
-    public function __construct(protected MailerInterface $mailer)
-    {
-
-    }
     #[Get('/users')]
     public function index(): View
     {
@@ -92,13 +80,12 @@ class UserController
             Thank you for signing up!
         HTML;
 
-        $email = (new Email())
-                    ->from('support@example.com')
-                    ->to($email)
-                    ->subject('Welcome')
-                    ->text($text)
-                    ->html($html);
-
-        $this->mailer->send($email);
+        (new \App\Models\Email())->queue(
+            new Address($email),
+            new Address('support@example.com'),
+            'Welcome to Our Service',
+            $html,
+            $text,
+        );
     }
 }
