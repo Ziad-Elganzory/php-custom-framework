@@ -19,9 +19,12 @@ class DB
             PDO::ATTR_EMULATE_PREPARES => false,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
         ];
+        // Extract the actual driver name (e.g., 'mysql' from 'pdo_mysql')
+        $driver = str_replace('pdo_', '', $config['driver']);
+        
         try{
             $this->pdo = new PDO(
-                $config['driver'] .':host='.$config['host'].';dbname='.$config['database'],
+                $driver .':host='.$config['host'].';dbname='.$config['database'],
                 $config['user'],
                 $config['pass'],
                 $config['options'] ?? $defaultOptions
