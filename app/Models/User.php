@@ -11,30 +11,55 @@ class User extends Model
 
     public function getUsers()
     {
-        $stmt = $this->db->prepare('SELECT * FROM users');
-        $stmt->execute();
-        // return $stmt->fetchAll();
-        return $this->fetchLazy($stmt);
+        return $this->db->createQueryBuilder()
+        ->select('*')
+        ->from('users')
+        ->fetchAllAssociative();
     }
 
     public function getUserById(int $id)
     {
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE id = ?');
-        $stmt->execute([$id]);
-        return $stmt->fetch();
+        return $this->db->createQueryBuilder()
+            ->select('*')
+            ->from('users')
+            ->where('id = :id')
+            ->setParameter('id', $id)
+            ->fetchAssociative();
     }
     
     public function create(string $user_name, string $first_name, string $last_name, string $email, string $password, string $date_of_birth, int $role)
     {
-        $stmt = $this->db->prepare('INSERT INTO users (user_name, first_name, last_name, email, password, date_of_birth, role) VALUES (?, ?, ?, ?, ?, ?,?)');
-        $stmt->execute([$user_name, $first_name, $last_name, $email, $password, $date_of_birth, $role]);
+        $this->db->createQueryBuilder()
+            ->insert('users')
+            ->values([
+                'user_name' => ':user_name',
+                'first_name' => ':first_name',
+                'last_name' => ':last_name',
+                'email' => ':email',
+                'password' => ':password',
+                'date_of_birth' => ':date_of_birth',
+                'role' => ':role',
+            ])
+            ->setParameters([
+                'user_name' => $user_name,
+                'first_name' => $first_name,
+                'last_name' => $last_name,
+                'email' => $email,
+                'password' => $password,
+                'date_of_birth' => $date_of_birth,
+                'role' => $role,
+            ])
+            ->executeStatement();
         return (int) $this->db->lastInsertId();
     }
 
     public function getUserRole(Role $role)
     {
-        $stmt = $this->db->prepare('SELECT * FROM users WHERE role = ?');
-        $stmt->execute([$role->value]);
-        return $stmt->fetchAll();
+        return $this->db->createQueryBuilder()
+            ->select('*')
+            ->from('users')
+            ->where('role = :role')
+            ->setParameter('role', $role->value)
+            ->fetchAllAssociative();
     }
 }

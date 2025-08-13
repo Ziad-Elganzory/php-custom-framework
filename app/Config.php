@@ -14,11 +14,11 @@ class Config
     public function __construct(array $env){
         $this->config = [
             'db'=> [
-                'driver'=> $env['DB_DRIVER'] ?? 'mysql',
                 'host'=> $env['DB_HOST'],
                 'user' => $env['DB_USER'],
-                'pass' => $env['DB_PASS'],
-                'database' => $env['DB_DATABASE']
+                'password' => $env['DB_PASS'],
+                'dbname' => $env['DB_DATABASE'],
+                'driver'=> $env['DB_DRIVER'] ?? 'pdo_mysql',
             ],
             'mailer'=>[
                 'dsn' => $env['MAILER_DSN'] ?? ''

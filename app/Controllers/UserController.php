@@ -54,18 +54,15 @@ class UserController
             (int) $_POST['role'] // Convert string to enum
         ];
         
-        // $user = (new User())->create(
-        //     $user_name,
-        //     $first_name, 
-        //     $last_name, 
-        //     $email, 
-        //     $password, 
-        //     $date_of_birth,
-        //     $role
-        // );
-
-        // header(header: "Location: /users/{$user}");
-        // exit;
+        $user = (new User())->create(
+            $user_name,
+            $first_name, 
+            $last_name, 
+            $email, 
+            $password, 
+            $date_of_birth,
+            $role
+        );
 
         $text = <<<Body
             Hello {$first_name} {$last_name},<br>
@@ -87,5 +84,8 @@ class UserController
             $html,
             $text,
         );
+
+        header(header: "Location: /users/{$user}");
+        exit;
     }
 }

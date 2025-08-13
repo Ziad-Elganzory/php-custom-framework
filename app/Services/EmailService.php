@@ -17,18 +17,34 @@ class EmailService
 
         foreach($emails as $email)
         {
-            $meta = json_decode($email->meta,true);
+            echo '<pre>';
+            print_r($email['meta']);
+            echo '</pre>';
+            
+            // Check if meta is not null before decoding
+            if ($email['meta'] === null) {
+                echo "Skipping email ID {$email['id']}: meta field is null\n";
+                continue;
+            }
+            
+            $meta = json_decode($email['meta'], true);
+            
+            // Check if json_decode was successful
+            if ($meta === null) {
+                echo "Skipping email ID {$email['id']}: invalid JSON in meta field\n";
+                continue;
+            }
 
             $emailMessage = (new \Symfony\Component\Mime\Email())
-                    ->to($meta['from'])
-                    ->from($meta['to'])
-                    ->subject($email->subject)
-                    ->text($email->text_body)
-                    ->html($email->html_body);
+                    ->to($meta['to'])
+                    ->from($meta['from'])
+                    ->subject($email['subject'])
+                    ->text($email['text_body'])
+                    ->html($email['html_body']);
 
             $this->mailer->send($emailMessage);
 
-            $this->emailModel->markEmailSent($email->id);
+            $this->emailModel->markEmailSent($email['id']);
         
         }
     }
