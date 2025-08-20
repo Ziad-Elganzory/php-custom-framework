@@ -2,6 +2,7 @@
 declare(strict_types=1);
 
 use App\App;
+use App\Controllers\CurlController;
 // use App\Container;
 use Illuminate\Container\Container;
 use App\Controllers\HomeController;
@@ -20,7 +21,8 @@ $router = new Router($container);
 
 $router->registerRouteFromControllerAttribute([
     HomeController::class,
-    UserController::class
+    UserController::class,
+    CurlController::class
 ]);
 
 (new App(
