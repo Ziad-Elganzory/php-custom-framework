@@ -2,7 +2,8 @@
 declare(strict_types=1);
 
 use App\App;
-use App\Container;
+// use App\Container;
+use Illuminate\Container\Container;
 use App\Controllers\HomeController;
 use App\Controllers\UserController;
 use App\Router;
@@ -21,13 +22,6 @@ $router->registerRouteFromControllerAttribute([
     HomeController::class,
     UserController::class
 ]);
-
-// $router
-//     ->get('/',[HomeController::class, 'index'])
-//     ->get('/users',[UserController::class, 'index'])
-//     ->get('/users/{id}',[UserController::class, 'show'])
-//     ->get('/users/create',[UserController::class, 'create'])
-//     ->post('/users/store',[UserController::class, 'store']);
 
 (new App(
     $container,

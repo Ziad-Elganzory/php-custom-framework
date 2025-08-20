@@ -14,7 +14,7 @@ class UserController
     #[Get('/users')]
     public function index(): View
     {
-        $users = (new User())->getUsers();
+        $users = User::all()->toArray();
 
         return View::make('users/index',['users' => $users]);
     }
@@ -23,8 +23,8 @@ class UserController
     public function show(array $params)
     {
         $id = (int) $params['id'];
-        $user = (new User())->getUserById($id);
-        return View::make('users/show',['user' => $user]);
+        $user = User::findOrFail($id);
+        return View::make('users/show', ['user' => $user->toArray()]);
     }
 
     #[Get('/users/create')]
@@ -51,18 +51,20 @@ class UserController
             $_POST['email'],
             $_POST['password'],
             $_POST['date_of_birth'],
-            (int) $_POST['role'] // Convert string to enum
+            (int) $_POST['role']
         ];
-        
-        $user = (new User())->create(
-            $user_name,
-            $first_name, 
-            $last_name, 
-            $email, 
-            $password, 
-            $date_of_birth,
-            $role
-        );
+
+        $user = new User();
+
+        $user->user_name = $user_name;
+        $user->first_name = $first_name;
+        $user->last_name = $last_name;
+        $user->email = $email;
+        $user->password = $password;
+        $user->date_of_birth = $date_of_birth;
+        $user->role = $role;
+
+        $user->save();
 
         $text = <<<Body
             Hello {$first_name} {$last_name},<br>
@@ -85,7 +87,7 @@ class UserController
             $text,
         );
 
-        header(header: "Location: /users/{$user}");
+        header(header: "Location: /users/{$user->id}");
         exit;
     }
 }

@@ -17,11 +17,7 @@ class EmailService
 
         foreach($emails as $email)
         {
-            echo '<pre>';
-            print_r($email['meta']);
-            echo '</pre>';
             
-            // Check if meta is not null before decoding
             if ($email['meta'] === null) {
                 echo "Skipping email ID {$email['id']}: meta field is null\n";
                 continue;
