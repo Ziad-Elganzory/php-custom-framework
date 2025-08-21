@@ -8,9 +8,13 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 use App\Exceptions\RouteNotFoundException;
+use App\Interfaces\EmailValidationInterface;
 use App\Services\MailerService;
 use Dotenv\Dotenv;
 use Symfony\Component\Mailer\MailerInterface;
+use App\Services\Emailable\EmailValidationService as  EmailableEmailValidationService;
+use App\Services\AbstractApi\EmailValidationService as AbstractApiEmailValidationService;
+
 
 class App
 {
@@ -40,6 +44,11 @@ class App
 
         $this->initDB($this->config->db);
         $this->container->bind(MailerInterface::class,fn()=> new MailerService($this->config->mailer['dsn']));
+        //Swap Between Email Validation Services (Emailable , Abstract API)
+        // Emailable Service
+        // $this->container->bind(EmailValidationInterface::class, fn()=> new EmailableEmailValidationService($this->config->apiKeys['emailable']));
+        //Abstract Api Service Provider
+        $this->container->bind(EmailValidationInterface::class, fn()=> new AbstractApiEmailValidationService($this->config->apiKeys['abstract_api_email_validation']));
         return $this;
     }
 
