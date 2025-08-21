@@ -17,12 +17,9 @@ class CurlController
         $email = 'ziadmazen770@gmail.com';
         $result = $this->emailValidationService->verify($email);
 
-        // echo '<pre>';
-        // print_r($result);
-        // echo '</pre>';
-
-        echo $result->score . '<br/>';
-        echo $result->isDeliverable ? 'Deliverable' : 'Not Deliverable';
+        echo '<pre>';
+        print_r($result);
+        echo '</pre>';
 
     }
 
