@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\Emailable;
 
+use App\DTO\EmailValidationResult;
 use App\Interfaces\EmailValidationInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
@@ -17,7 +18,7 @@ class EmailValidationService implements EmailValidationInterface
 {
     private string $baseUrl = 'https://api.emailable.com/v1/';
     public function __construct(private string $apiKey){}
-    public function verify(string $email): array
+    public function verify(string $email): EmailValidationResult
     {
         $stack = HandlerStack::create();
         $maxRetry = 3;
@@ -36,7 +37,9 @@ class EmailValidationService implements EmailValidationInterface
 
         $response = $client->get('verify?', ['query' => $params]);
 
-        return json_decode($response->getBody()->getContents(),true);
+        $body = json_decode($response->getBody()->getContents(),true);
+
+        return new EmailValidationResult($body['score'], $body['state'] === 'deliverable');
     }
 
     public function getRetryMiddleware($maxRetry){
